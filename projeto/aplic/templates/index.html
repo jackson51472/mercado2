@@ -14,7 +14,14 @@
           {% for produto in produtos %}
             <div class="card-text col-md-4">
               <a href="{% url 'detalhe_produto' id=produto.id %}">
-              <div class="card-title">{{ produto.nome_produto }}</div>
+              {% if produto.status == "Grama" %}
+              
+              <div class="card-title">{{ produto.nome_produto }} {{ produto.dividir }}Kg</div>
+              {% elif produto.status == "Ml" %}
+              <div class="card-title">{{ produto.nome_produto }} {{ produto.dividir }}Ml</div>
+              {% else %}
+              <div class="card-title">{{ produto.nome_produto }} kk</div>
+              {% endif %}
               <img src="{{ produto.imagem.thumb.url }}" alt="{{ produto.nome_produto }}" width="120" height="120">              
               <div class="card-info">
                 <div class="card-header">Preço: R${{ produto.preco }}</div>

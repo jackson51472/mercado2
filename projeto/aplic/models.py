@@ -68,9 +68,27 @@ class Fornecedor(models.Model):
         return f"{self.nome_fornecedor}"
     
 class Produto(models.Model):
+
     nome_produto =  models.CharField(_("Nome do Produto"), blank=False, max_length=50, unique=True,)
     preco = models.DecimalField(_("Preço"), null=True, blank=False, max_digits=8, decimal_places=2)
     peso = models.DecimalField(_("Peso"), null=True, blank=False, max_digits=8, decimal_places=2)
+
+    GRAMA = "Grama"
+    ML = "Ml"
+    UNIDADE = "Quantidade"
+
+    CHOICES = [
+        (GRAMA, "Grama"),
+        (ML,"Ml"),
+        (UNIDADE,"Quantidade"),
+       
+    ]
+    status = models.CharField(
+        choices=CHOICES,
+    )
+
+
+
     imagem = StdImageField(_('Imagem'), null=True, blank=True, upload_to=get_file_path, variations={'thumb': {'width': 420, 'height': 260, 'crop': True}})
     fornecedor = models.ForeignKey(Fornecedor, blank=True, null=True, on_delete= models.SET_NULL)
     marca = models.CharField(_("Nome da Marca"), blank=True, null=True, max_length=50,)
@@ -81,6 +99,17 @@ class Produto(models.Model):
     class Meta:
         verbose_name = _('Produto')
         verbose_name_plural = _('Produtos')
+
+    def dividir(self):
+        quantidade = 0
+        if self.peso > 1000:
+            quantidade = self.peso / 1000
+        else:
+            quantidade = self.peso
+        return quantidade
+
+
+
 
     def __str__(self):
         return f"{self.nome_produto} / R${self.preco}"

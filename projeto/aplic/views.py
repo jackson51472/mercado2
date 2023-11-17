@@ -34,7 +34,7 @@ class CadastroLogin():
             nome = request.POST.get("nome")
             cpf = request.POST.get("cpf")
 
-            user = authenticate(nome=nome, cpf=cpf)
+            user = authenticate(username=nome, password=cpf)
 
             if user:
                 return HttpResponse("Logado")
