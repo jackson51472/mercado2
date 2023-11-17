@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from stdimage.models import StdImageField
+from aplic.JJauth import User
 
 def get_file_path(_instance, filename):
     ext = filename.split('.')[-1]
@@ -102,11 +103,27 @@ class Produto(models.Model):
 
     def dividir(self):
         quantidade = 0
-        if self.peso > 1000:
+        if self.peso >= 1000:
             quantidade = self.peso / 1000
         else:
             quantidade = self.peso
-        return quantidade
+
+
+        #GRAMA
+        if self.status == "Grama":
+            if self.peso >= 1000:
+                return f"{quantidade:.1f} kg"
+            else:
+                return f"{quantidade:.1f} g"
+        #ML    
+        elif self.status == "Ml":
+            if self.peso >= 1000:
+                return f"{quantidade:.1f} L"
+            else:
+                return f"{quantidade:.1f} ml"
+        #UNIDADE
+        else:
+            return quantidade
 
 
 
